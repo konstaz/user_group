@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %} User List {% endblock title %}
+
+{% block content %}
+    <table class="table table-dark">
+  <thead>
+    <tr>
+ 			<th scope="col">#</th>
+ 			<th scope="col">id</th>
+ 			<th scope="col">Username</th>
+ 			<th scope="col">Created</th>
+ 			<th scope="col">Group</th>
+            <th scope="col">Edit</th>
+            <th scope="col">Delete</th>
+
+ 		</tr>
+  </thead>
+        <tbody>
+ 			{% for user in users %}
+ 				<tr>
+ 					<th scope="row">{{ forloop.counter }}</th>
+ 					<td>{{  users.id  }}</td>
+ 					<td>{{  users.username  }}</td>
+ 					<td>{{  users.created  }}</td>
+ 					<td>{{  users.group  }}</td>
+                    <td><a class="btn btn-dark" href="{% url 'users:edit' pk=users.id %}">Edit</a></td>
+                    <td><a class="btn btn-dark" href="{% url 'users:delete' pk=users.id %}">Delete</a></td>
+ 				</tr>
+ 			{% endfor %}
+ 	    </tbody>
+ 	</table>
+	<td><a class="btn btn-dark" href="{% url 'users:add_user' %}">Add new user</a></td>
+    	<form action="{% url 'users:add_user' %}" method ="post">
+      		{% csrf_token %}
+      		{{ form.as_p }}
+      	<button type="submit">Confirm</button>
+    	</form>
+  {% if messages %}
+    {% for message in messages %}
+      {% if message.tags %}
+        <script>alert("{{ message }}")</script>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+ 	<ul class="pagination">
+ 	<li class="pagination">
+         {% if page_obj.has_previous %}
+             <li class="page-item"><a href="?page=1" class="page-link">&laquo; first</a></li>
+ 			<li class="page-item"><a href="?page={{ page_obj.previous_page_number }}" class="page-link">previous</a></li>
+         {% endif %}
+
+         <span class="current">
+             Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+         </span>
+      {% if page_obj.has_next %}
+ 			<li class="page-item"><a href="?page={{ page_obj.next_page_number }}" class="page-link">next</a></li>
+ 			<li class="page-item"><a href="?page={{ page_obj.paginator.num_pages }}" class="page-link">last &raquo;</a></li>
+      {% endif %}
+ 	</ul>
+{% endblock content %}

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %} Edit User {% endblock title %}
+
+{% block content %}
+
+
+  <caption>Editing user</caption>
+  <tr>
+    <th>Nickname</th>
+    <th>Date_created</th>
+    <th>Group</th>
+    <th>Action</th>
+  </tr>
+  <tr>
+    <td>{{ user.nickname }}</td>
+    <td>{{ user.date_created }}</td>
+    <td>{{ user.group }}</td>
+    <td>
+      <form action="{% url 'users:delete_user' user.id %}" method="post">
+        {% csrf_token %}
+        <p><button type="submit">Delete user</button></p>
+      </form>
+    </td>
+  </tr>
+
+
+<div class="add">
+  <p class="add">Enter new values</p>
+  <form action="{% url 'users:edit_user' user.id %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+  </form>
+</div>
+{% endblock content %}

@@ -1,0 +1,11 @@
+backend:
+  env_file: .env
+  build: .
+  container_name: backend
+  # command: tail -f /dev/null
+  command: python ./src/manage.py runserver 0:8000
+  restart: always
+  ports:
+    - "8000:8000"
+  volumes:
+  - ./:/test_site
